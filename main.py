@@ -8,7 +8,7 @@ from constants import *
 from player import Player, Shot
 from asteroid import Asteroid
 from asteroidfield import *
-
+from score import *
 
 
 def main():
@@ -16,28 +16,39 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     pygame.display.set_caption("Asteroids | Boot.dev")
+
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    
 
     Asteroid.containers = (asteroids,updatable,drawable)
     AsteroidField.containers = updatable
-
     asteroid_field = AsteroidField()
 
     Player.containers = (updatable, drawable)
-
     player = Player(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2)
-   
+    
     Shot.containers = (shots,updatable,drawable)
+    Score.containers = (updatable,drawable)
+    score = Score()
+    prev_score = score.points   
 
-    dt = 0
     background = pygame.Surface(screen.get_size())
     background = pygame.image.load("img/Blue_Nebula4.png") 
     background = background.convert_alpha()
+
+    dt = 0
+
     while(True):
-  
+        
+
+        
+        if score.points != prev_score: pygame.display.set_caption(f"Asteroids | Score: {score.points}")
+
+        prev_score = score.points
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -50,12 +61,14 @@ def main():
 
             for shot in shots:
                 if asteroid.collision(shot):
-                    asteroid.split()
+                    asteroid.split(score)
                     shot.kill()
-
+        
+        
         screen.fill("black")
         screen.blit(background,(0,0))
         screen.blit(background,(1024,0))
+        
         
         for object in drawable:
             object.draw(screen)

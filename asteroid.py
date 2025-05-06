@@ -15,21 +15,20 @@ class Asteroid(CircleShape):
         self.position += self.velocity * dt
 
         if self.spawn_protection < 0:
-        # Step 2: wrap on X axis
             if self.position.x > SCREEN_WIDTH:
                 self.position.x = 0
             elif self.position.x < 0:
                 self.position.x = SCREEN_WIDTH
 
-        # Step 3: wrap on Y axis
             if self.position.y > SCREEN_HEIGHT:
                 self.position.y = 0
             elif self.position.y < 0:
                 self.position.y = SCREEN_HEIGHT
            
-        self.spawn_protection -= 0.1
+        if self.spawn_protection > 0: self.spawn_protection -= 0.1
 
-    def split(self):
+    def split(self,score):
+        score.points += 5
         self.kill()
         if self.radius <= ASTEROID_MIN_RADIUS:
             return
