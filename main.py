@@ -15,7 +15,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-
+    pygame.display.set_caption("Asteroids | Boot.dev")
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -33,12 +33,15 @@ def main():
     Shot.containers = (shots,updatable,drawable)
 
     dt = 0
-    
+    background = pygame.Surface(screen.get_size())
+    background = pygame.image.load("img/Blue_Nebula4.png") 
+    background = background.convert_alpha()
     while(True):
+  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-       
+            
         updatable.update(dt)
         for asteroid in asteroids:
             if player.collision(asteroid):
@@ -51,13 +54,17 @@ def main():
                     shot.kill()
 
         screen.fill("black")
-    
+        screen.blit(background,(0,0))
+        screen.blit(background,(1024,0))
+        
         for object in drawable:
             object.draw(screen)
         pygame.display.flip()
 
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
+
+        
 
 
 if __name__ == "__main__":

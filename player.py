@@ -1,3 +1,4 @@
+from sys import exit
 import pygame
 from circleshape import CircleShape
 from constants import *
@@ -40,6 +41,8 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        if keys[pygame.K_ESCAPE]:
+            exit()
     
     def move(self, dt):
 
