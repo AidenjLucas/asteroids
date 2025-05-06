@@ -15,14 +15,12 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    pygame.display.set_caption("Asteroids | Boot.dev")
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
     
-
     Asteroid.containers = (asteroids,updatable,drawable)
     AsteroidField.containers = updatable
     asteroid_field = AsteroidField()
@@ -41,11 +39,11 @@ def main():
 
     dt = 0
 
+    pygame.display.set_caption(f"Asteroids | Score: {score.points} | lives : {player.lives}")
+    
     while(True):
         
-
-        
-        if score.points != prev_score: pygame.display.set_caption(f"Asteroids | Score: {score.points}")
+        if score.points != prev_score: pygame.display.set_caption(f"Asteroids | Score: {score.points} | lives : {player.lives}")
 
         prev_score = score.points
 
@@ -56,6 +54,9 @@ def main():
         updatable.update(dt)
         for asteroid in asteroids:
             if player.collision(asteroid):
+                respawn(asteroids,player)
+                pygame.display.set_caption(f"Asteroids | Score: {score.points} | lives : {player.lives}")
+            if player.lives < 1:
                 print("Game Over!")
                 sys.exit()
 
@@ -77,8 +78,23 @@ def main():
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
 
-        
 
+def respawn(asteroids,player):
+    
+    for asteroid in asteroids:
+        asteroid.kill()
+
+    player.lives -= 1
+    player.position = pygame.Vector2(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2)
+    player.rotation = 0
+
+    asteroids.empty()
+    
 
 if __name__ == "__main__":
     main()
+
+
+
+
+    
