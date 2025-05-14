@@ -1,6 +1,6 @@
 import pygame
 import random
-from imageloader import loadimage
+from helperfunctions import loadimage
 from circleshape import CircleShape
 from constants import *
 
@@ -9,14 +9,13 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
 
         self.spawn_protection = spawn_protection
-        self.image = None
-        self.rect = None
-
-        loadimage("img/meteor_large.png",self)
+        self.image,self.rect = loadimage("img/meteor_large.png",self)
+        
        
         
     def draw(self, screen):
         screen.blit(self.image,self.rect.topleft)
+        
          
     def update(self, dt):
         
@@ -41,7 +40,7 @@ class Asteroid(CircleShape):
 
     def split(self,score):
         score.points += 5
-
+      
         self.kill()
 
         if self.radius <= ASTEROID_MIN_RADIUS:

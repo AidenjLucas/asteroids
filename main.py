@@ -36,7 +36,8 @@ def main():
     background = pygame.Surface(screen.get_size())
     background = pygame.image.load("img/Blue_Nebula4.png") 
     background = background.convert_alpha()
-
+    
+    
     dt = 0
 
     pygame.display.set_caption(f"Asteroids | Score: {score.points} | lives : {player.lives}")
@@ -57,7 +58,7 @@ def main():
                 respawn(asteroids,player)
                 pygame.display.set_caption(f"Asteroids | Score: {score.points} | lives : {player.lives}")
             if player.lives < 1:
-                print("Game Over!")
+                print(f"Game Over! Your score was {score.points}")
                 sys.exit()
 
             for shot in shots:
@@ -72,7 +73,7 @@ def main():
         
         
         for object in drawable:
-            object.draw(screen)
+             object.draw(screen)
         pygame.display.flip()
 
         # limit the framerate to 60 FPS
